@@ -45,6 +45,7 @@ namespace ProjetPricing.model
                                 double spot, double sigma, double p, int rebalancingPeriod)
         {
             this.opt = opt;
+            this.rebalancingPeriod = rebalancingPeriod;
             PricingResults pricingResult = pricer.Price(opt, startTime, 360, spot, sigma);
             delta = pricingResult.Deltas[0];
             this.riskyAsset = delta * spot;

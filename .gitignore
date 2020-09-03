@@ -1,0 +1,14 @@
+.vs/
+obj/
+bin/
+packages/
+*.suo
+*.user
+*.ncb
+Debug/
+Release/
+CodeAnalyst/
+ipch/
+*.sdf
+*.opensdf
+

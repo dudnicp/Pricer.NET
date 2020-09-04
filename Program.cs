@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PricingLibrary.FinancialProducts;
 using ProjetPricing.model;
+using ProjetPricing.services;
 using ProjetPricing.view;
 using ProjetPricing.viewModel;
 
@@ -20,8 +21,11 @@ namespace ProjetPricing
             ConsoleView view = new ConsoleView();
             PortfolioViewModel viewModel = new PortfolioViewModel(portfolio, view);
 
-            viewModel.displayPortfolioEvolution();
-            Console.ReadLine();
+            // viewModel.displayPortfolioEvolution();
+            foreach (Share s in DataBaseServices.getShares())
+            {
+                System.Diagnostics.Debug.WriteLine(s.Id);
+            }
         }
     }
 }

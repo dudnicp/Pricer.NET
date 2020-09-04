@@ -59,11 +59,11 @@ namespace ProjetPricing.model
 
         public void updateComposition(DateTime startTime, double spot, double sigma)
         {
-            double oldDelta = this.delta;
+            double oldDelta = delta;
             PricingResults pricingResult = pricer.Price(opt, startTime, 360, spot, sigma);
             delta = pricingResult.Deltas[0];
-            this.riskyAsset = delta * spot;
-            this.nonRiskyAsset = Math.Exp(r * rebalancingPeriod) + (oldDelta - delta) * spot;
+            riskyAsset = delta * spot;
+            nonRiskyAsset = nonRiskyAsset*Math.Exp(r * rebalancingPeriod/365) + (oldDelta - delta) * spot;
         }
     }
 }

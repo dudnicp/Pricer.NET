@@ -23,7 +23,7 @@ namespace ProjetPricing
 	
 	
 	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="DotNetDB")]
-	public partial class DataClasses1DataContext : System.Data.Linq.DataContext
+	public partial class DataBaseAccessDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
@@ -38,25 +38,31 @@ namespace ProjetPricing
     partial void DeleteShareNames(ShareNames instance);
     #endregion
 		
-		public DataClasses1DataContext(string connection) : 
+		public DataBaseAccessDataContext() : 
+				base(global::ProjetPricing.Properties.Settings.Default.DotNetDBConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
+		
+		public DataBaseAccessDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public DataClasses1DataContext(System.Data.IDbConnection connection) : 
+		public DataBaseAccessDataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public DataClasses1DataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public DataBaseAccessDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public DataClasses1DataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public DataBaseAccessDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();

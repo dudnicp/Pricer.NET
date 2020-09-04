@@ -16,11 +16,12 @@ namespace ProjetPricing
         {
             Share share = new Share("share", "ID");
             VanillaCall opt = new VanillaCall("salut", share, new DateTime(2000, 12, 31), 100);
-            HedgingPortfolio portfolio = new HedgingPortfolio(opt, new DateTime(2000, 1, 1), 10, 0.5, 50, 1);
+            HedgingPortfolio portfolio = new HedgingPortfolio(opt, new DateTime(2000, 1, 1), 31, 0.1, 50, 1);
             ConsoleView view = new ConsoleView();
             PortfolioViewModel viewModel = new PortfolioViewModel(portfolio, view);
 
             viewModel.displayPortfolioEvolution();
+            Console.ReadLine();
         }
     }
 }

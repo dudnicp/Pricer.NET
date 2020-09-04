@@ -18,9 +18,10 @@ namespace ProjetPricing.viewModel
         {
             for (int i = 0; i < portfolio.NbPeriods; i++)
             {
-                portfolio.updateComposition(new DateTime(), 1, 0.5);
+                portfolio.updateComposition(new DateTime(), 31, 0.5);
                 view.RiskyAsset = portfolio.RiskyAsset;
                 view.NonRiskyAsset = portfolio.NonRiskyAsset;
+                view.update();
                 view.pause();
             }
             view.close();

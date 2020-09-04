@@ -11,6 +11,7 @@ namespace ProjetPricing.view
     {
         private double riskyAsset = 0;
         private double nonRiskyAsset = 0;
+        private double period = 0;
 
         public double RiskyAsset
         {
@@ -38,17 +39,17 @@ namespace ProjetPricing.view
             }
         }
 
-        public void displayPortfolio(int period)
+        public void update()
         {
-            Console.WriteLine("--------------");
-            Console.WriteLine("Portfolio Composition T" + period);
-            Console.WriteLine("Risky Asset : " + riskyAsset);
-            Console.WriteLine("Non Risky Asset : " + nonRiskyAsset);
+            System.Diagnostics.Debug.WriteLine("--------------");
+            System.Diagnostics.Debug.WriteLine("Portfolio Composition T" + period);
+            System.Diagnostics.Debug.WriteLine("Risky Asset : " + riskyAsset);
+            System.Diagnostics.Debug.WriteLine("Non Risky Asset : " + nonRiskyAsset);
+            period++;
         }
 
         public void pause()
         {
-            Console.Read();
         }
 
         public void close()

@@ -4,6 +4,8 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PricingLibrary.FinancialProducts;
+using PricingLibrary.Utilities.MarketDataFeed;
 using ProjetPricing.model;
 using ProjetPricing.view;
 
@@ -11,26 +13,37 @@ namespace ProjetPricing.viewModel
 {
     class PortfolioViewModel
     {
-        private HedgingPortfolio portfolio;
         private ConsoleView view;
 
-        public void displayPortfolioEvolution()
+        public void displayPortfolioEvolution(VanillaCall opt, DateTime testStart, DateTime testEnd,
+            int pricingPeriod, int estimationPeriod, IDataFeedProvider dataFeedProvider)
         {
-            for (int i = 0; i < portfolio.NbPeriods; i++)
+            PortfolioManager manager = new PortfolioManager(opt, dataFeedProvider);
+            List<Result> results = manager.computePortfolioEvolution(testStart, testEnd, 
+                                estimationPeriod, pricingPeriod);
+            foreach (Result res in results)
             {
-                portfolio.updateComposition(new DateTime(), 31, 0.5);
-                view.RiskyAsset = portfolio.RiskyAsset;
-                view.NonRiskyAsset = portfolio.NonRiskyAsset;
+                view.RiskyAsset = res.Portfolio.RiskyAsset;
+                view.NonRiskyAsset = res.Portfolio.NonRiskyAsset;
                 view.update();
-                view.pause();
             }
-            view.close();
         }
 
-        public PortfolioViewModel(HedgingPortfolio portfolio, ConsoleView view)
+        public PortfolioViewModel(ConsoleView view)
         {
-            this.portfolio = portfolio;
             this.view = view;
+        }
+
+        public void runApp()
+        {
+            Share share = new Share("ACCOR SA", "AC FP");
+            VanillaCall opt = new VanillaCall("opt", share, new DateTime(2020, 31, 12), 100);
+            DateTime testStart = new DateTime(2020, 1, 1);
+            DateTime testEnd = new DateTime(2020, 10, 1);
+            int pricingPeriod = 20;
+            int estimationPeriod = 50;
+            displayPortfolioEvolution(opt, testStart, testEnd, pricingPeriod, estimationPeriod,
+                new SimulatedDataFeedProvider());
         }
     }
 }

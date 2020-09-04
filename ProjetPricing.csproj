@@ -105,6 +105,8 @@
       <DependentUpon>DataBaseAccess.dbml</DependentUpon>
     </Compile>
     <Compile Include="model\HedgingPortfolio.cs" />
+    <Compile Include="model\PortfolioManager.cs" />
+    <Compile Include="model\Result.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

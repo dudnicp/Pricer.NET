@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PricingApp
+namespace DataBaseAccessContext
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;

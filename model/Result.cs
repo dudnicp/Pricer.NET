@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetPricing.model
+namespace PricingApp.model
 {
-    class Result
+    public class Result
     {
         private HedgingPortfolio portfolio;
         private double portfolioValue;

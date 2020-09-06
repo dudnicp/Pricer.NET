@@ -8,9 +8,9 @@ using PricingLibrary.Computations;
 using PricingLibrary.FinancialProducts;
 using PricingLibrary.Utilities;
 
-namespace ProjetPricing.model
+namespace PricingApp.model
 {
-    class PortfolioManager
+    public class PortfolioManager
     {
         IDataFeedProvider dataFeedProvider;
         private VanillaCall opt;
@@ -27,8 +27,9 @@ namespace ProjetPricing.model
 
         // Crée une liste de resultats (l'évolution du portefeuille de l'option sur la durée demandée)
         public List<Result> computePortfolioEvolution(DateTime testStart, DateTime testEnd,
-                            int estimationPeriod, int rebalancingPeriod)
+                            int rebalancingPeriod, int estimationPeriod)
         {
+
             Pricer pricer = new Pricer(); // Création Pricer pour la suite de la fonction
 
             List<Result> evolution = new List<Result>(); // Création liste vide de portefeuilles
@@ -47,24 +48,23 @@ namespace ProjetPricing.model
 
             /* Ajout du resultat à la liste des évolutions */
             evolution.Add(new Result(firstPortfolio,
-                                     firstPortfolio.RiskyAsset + firstPortfolio.RiskyAsset,
+                                     firstPortfolio.RiskyAsset + firstPortfolio.NonRiskyAsset,
                                      optPrice - opt.Strike,
                                      pricingDate));
 
             /* Calcul des portefeuilles sur toute la période */
-            int i = 0;
-            DateTime pricingPeriodStart = data[estimationPeriod + i * rebalancingPeriod].Date;
-            pricingDate = data[estimationPeriod + (i + 1) * rebalancingPeriod].Date;
+            int i = 1;
+            DateTime estimationPeriodStart = data[rebalancingPeriod * i].Date;
+            pricingDate = data[rebalancingPeriod * i + estimationPeriod].Date;
 
             while (DateTime.Compare(pricingDate, testEnd) < 0)
             {
-                List<DataFeed> pricingData = data.GetRange(estimationPeriod + i * rebalancingPeriod,
-                    rebalancingPeriod);
-                (sigma, spot) = getVolatilityAndSpot(pricingData, rebalancingPeriod);
+                estimationData = data.GetRange(i * rebalancingPeriod, estimationPeriod);
+                (sigma, spot) = getVolatilityAndSpot(estimationData, estimationPeriod);
 
 
                 double portfolioValue = delta * spot + evolution.Last().Portfolio.NonRiskyAsset * Math.Exp(
-                    r * DayCount.CountBusinessDays(pricingPeriodStart, pricingDate)/ 365);
+                    r * DayCount.CountBusinessDays(estimationPeriodStart, pricingDate)/ 365);
 
                 pricingResult = pricer.Price(opt, pricingDate, 360, spot, sigma);
                 delta = pricingResult.Deltas[0];
@@ -79,8 +79,8 @@ namespace ProjetPricing.model
                               pricingDate));
 
                 i += 1;
-                pricingPeriodStart = pricingDate;
-                pricingDate = data[estimationPeriod + (i + 1) * rebalancingPeriod].Date;
+                estimationPeriodStart = data[rebalancingPeriod * i].Date;
+                pricingDate = data[rebalancingPeriod * i + estimationPeriod].Date;
             }
 
 

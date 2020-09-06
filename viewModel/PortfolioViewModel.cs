@@ -6,30 +6,28 @@ using System.Text;
 using System.Threading.Tasks;
 using PricingLibrary.FinancialProducts;
 using PricingLibrary.Utilities.MarketDataFeed;
-using ProjetPricing.model;
-using ProjetPricing.view;
+using PricingApp.view;
+using PricingApp.model;
 
-namespace ProjetPricing.viewModel
+namespace PricingAPp.viewModel
 {
-    class PortfolioViewModel
+    public class PortfolioViewModel
     {
-        private ConsoleView view;
+        private View view;
 
         public void displayPortfolioEvolution(VanillaCall opt, DateTime testStart, DateTime testEnd,
-            int pricingPeriod, int estimationPeriod, IDataFeedProvider dataFeedProvider)
+            int rebalancingPeriod, int estimationPeriod, IDataFeedProvider dataFeedProvider)
         {
             PortfolioManager manager = new PortfolioManager(opt, dataFeedProvider);
             List<Result> results = manager.computePortfolioEvolution(testStart, testEnd, 
-                                estimationPeriod, pricingPeriod);
+                                rebalancingPeriod, estimationPeriod);
             foreach (Result res in results)
             {
-                view.RiskyAsset = res.Portfolio.RiskyAsset;
-                view.NonRiskyAsset = res.Portfolio.NonRiskyAsset;
-                view.update();
+                view.update(res);
             }
         }
 
-        public PortfolioViewModel(ConsoleView view)
+        public PortfolioViewModel(View view)
         {
             this.view = view;
         }
@@ -37,12 +35,12 @@ namespace ProjetPricing.viewModel
         public void runApp()
         {
             Share share = new Share("ACCOR SA", "AC FP");
-            VanillaCall opt = new VanillaCall("opt", share, new DateTime(2020, 31, 12), 100);
+            VanillaCall opt = new VanillaCall("opt", share, new DateTime(2020, 12, 31), 100);
             DateTime testStart = new DateTime(2020, 1, 1);
             DateTime testEnd = new DateTime(2020, 10, 1);
-            int pricingPeriod = 20;
-            int estimationPeriod = 50;
-            displayPortfolioEvolution(opt, testStart, testEnd, pricingPeriod, estimationPeriod,
+            int rebalancingPeriod = 20;
+            int estimationPeriod = 10;
+            displayPortfolioEvolution(opt, testStart, testEnd, rebalancingPeriod, estimationPeriod,
                 new SimulatedDataFeedProvider());
         }
     }

@@ -23,6 +23,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="400*"/>
             <ColumnDefinition Width="400*"/>
+            <ColumnDefinition Width="400*"/>
         </Grid.ColumnDefinitions>
         <Label x:Name="mainLabel" Content="Caractéristiques de l'option" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
         <Label x:Name="titleLabel" Content="Titre de l'option" Grid.Column="0" Grid.Row="1"/>
@@ -47,6 +48,8 @@
         <TextBox x:Name="estimationPeriodField" Grid.Row="9" Grid.Column="1"/>
         
         <Button x:Name="addOptionButton" Content="Ajouter l'option" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" />
+
+        <TextBox x:Name="resultBox" Grid.Column="2" Grid.Row="0" Grid.RowSpan="11" />
 
     </Grid>
 </Window>

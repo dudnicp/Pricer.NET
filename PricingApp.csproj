@@ -36,6 +36,28 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CsvHelper, Version=15.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
       <HintPath>packages\CsvHelper.15.0.5\lib\net47\CsvHelper.dll</HintPath>
@@ -87,7 +109,7 @@
       <DependentUpon>DataBaseAccess.dbml</DependentUpon>
     </Compile>
     <Compile Include="model\Result.cs" />
-    <Page Include="MainWindow.xaml">
+    <Page Include="view\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -96,9 +118,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="view\ConsoleView.cs" />
-    <Compile Include="services\DataBase.cs" />
+    <Compile Include="services\DataBaseServices.cs" />
     <Compile Include="model\HedgingPortfolio.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="view\View.cs" />
+    <Compile Include="view\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -127,6 +150,7 @@
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>DataBaseAccess.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <CustomToolNamespace>DataBaseAccessContext</CustomToolNamespace>
     </None>
     <None Include="DataBaseAccess.dbml.layout">
       <DependentUpon>DataBaseAccess.dbml</DependentUpon>

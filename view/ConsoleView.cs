@@ -1,13 +1,14 @@
-﻿using System;
+﻿using PricingApp.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 
-namespace ProjetPricing.view
+namespace PricingApp.view
 {
-    class ConsoleView
+    public class ConsoleView : View
     {
         private double riskyAsset = 0;
         private double nonRiskyAsset = 0;
@@ -39,22 +40,11 @@ namespace ProjetPricing.view
             }
         }
 
-        public void update()
+        public void update(Result res)
         {
             System.Diagnostics.Debug.WriteLine("--------------");
-            System.Diagnostics.Debug.WriteLine("Portfolio Composition T" + period);
-            System.Diagnostics.Debug.WriteLine("Risky Asset : " + riskyAsset);
-            System.Diagnostics.Debug.WriteLine("Non Risky Asset : " + nonRiskyAsset);
-            period++;
-        }
-
-        public void pause()
-        {
-        }
-
-        public void close()
-        {
-            // Nothing to do
+            System.Diagnostics.Debug.WriteLine("Risky Asset : " + res.Portfolio.RiskyAsset);
+            System.Diagnostics.Debug.WriteLine("Non Risky Asset : " + res.Portfolio.NonRiskyAsset);
         }
 
         public ConsoleView() { }

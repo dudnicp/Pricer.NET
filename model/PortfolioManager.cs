@@ -33,7 +33,7 @@ namespace ProjetPricing.model
 
             List<Result> evolution = new List<Result>(); // Création liste vide de portefeuilles
 
-            string[] shareID = {opt.UnderlyingShare.Id};
+            string[] shareID = { opt.UnderlyingShare.Id};
             List<DataFeed> data = dataFeedProvider.GetDataFeed(shareID, testStart, opt.Maturity); // Données totales
 
             /* Calcul de la composition du portefeuille au début */

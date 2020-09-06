@@ -37,7 +37,7 @@ namespace ProjetPricing.viewModel
         public void runApp()
         {
             Share share = new Share("ACCOR SA", "AC FP");
-            VanillaCall opt = new VanillaCall("opt", share, new DateTime(2020, 12, 31), 20);
+            VanillaCall opt = new VanillaCall("opt", share, new DateTime(2020, 31, 12), 100);
             DateTime testStart = new DateTime(2020, 1, 1);
             DateTime testEnd = new DateTime(2020, 10, 1);
             int pricingPeriod = 20;

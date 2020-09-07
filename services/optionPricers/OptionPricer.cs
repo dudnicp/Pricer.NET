@@ -12,7 +12,7 @@ namespace PricingApp.services.optionPricers
 {
     public abstract class OptionPricer
     {
-        private Option opt;
+        protected Option opt;
 
         public Option Opt { get { return opt; } }
 

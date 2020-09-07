@@ -108,7 +108,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataBaseAccess.dbml</DependentUpon>
     </Compile>
-    <Compile Include="model\Result.cs" />
+    <Compile Include="model\CompletePricingResults.cs" />
+    <Compile Include="model\TrackedResults.cs" />
     <Page Include="view\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -121,16 +122,18 @@
     <Compile Include="utils\VolatilityComputing.cs" />
     <Compile Include="utils\CorrelationComputing.cs" />
     <Compile Include="view\ConsoleView.cs" />
+    <Compile Include="services\optionPricers\BasketOptionPricer.cs" />
+    <Compile Include="services\optionPricers\OptionPricer.cs" />
+    <Compile Include="services\optionPricers\VanillaCallPricer.cs" />
     <Compile Include="services\DataBaseServices.cs" />
     <Compile Include="model\HedgingPortfolio.cs" />
-    <Compile Include="view\View.cs" />
     <Compile Include="view\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="model\PortfolioManager.cs" />
+    <Compile Include="services\PortfolioManager.cs" />
     <Compile Include="viewModel\PortfolioViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -119,9 +119,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="services\StatComputing.cs" />
+    <Compile Include="utils\ConvertDecimalArray.cs" />
+    <Compile Include="utils\LogRendementComputing.cs" />
     <Compile Include="utils\VolatilityComputing.cs" />
     <Compile Include="utils\CorrelationComputing.cs" />
-    <Compile Include="view\ConsoleView.cs" />
     <Compile Include="services\optionPricers\BasketOptionPricer.cs" />
     <Compile Include="services\optionPricers\OptionPricer.cs" />
     <Compile Include="services\optionPricers\VanillaCallPricer.cs" />

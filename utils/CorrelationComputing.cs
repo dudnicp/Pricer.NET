@@ -38,20 +38,5 @@ namespace PricingApp.utils
             }
             return corrMatrix;
         }
-
-        public static void dispMatrix(double[,] mycorrMatrix)
-        {
-            int n = mycorrMatrix.GetLength(0);
-
-            Console.WriteLine("Correlation matrix:");
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    Console.Write(mycorrMatrix[i, j] + "\t");
-                }
-                Console.Write("\n");
-            }
-        }
     }
 }

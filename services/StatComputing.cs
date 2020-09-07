@@ -14,9 +14,8 @@ namespace PricingApp.services
     {
         // data is a list of DataFeed containing the underlying spots during the estimation window 
         // utiliser la fonction de conversion une fois dans le main et remplacer les entrées de fonctpn par un double[,]
-       public double[,] correlationMatrix(List<DataFeed> data)
+       public static double[,] correlationMatrix(double[,] underlyingSpots)
         {
-            double[,] underlyingSpots = ConvertDecimalArray.listDataFeedToDoubleArray(data);
             // converting var to double
             // converting to log ??
             int dataSize = underlyingSpots.GetLength(0); 
@@ -27,11 +26,14 @@ namespace PricingApp.services
             return correlationMatrix;
         }
 
-        public double[] basketVolatilities(List<DataFeed> data)
+        public static double[] volatilitiesComputing(double[,] underlyingSpots)
         {
-            double[, ] underlyingSpots = ConvertDecimalArray.listDataFeedToDoubleArray(data);
-            double[] volatilities = new double[underlyingSpots.GetLength(1)];
-            
+            double[,] covarianceMatrix = CovarianceComputing.computeCovarianceMatrix(underlyingSpots);
+            double[] volatilities = new double[covarianceMatrix.GetLength(0)];
+            for(int i=0; i<volatilities.Count(); i++)
+            {
+                volatilities[i] = Math.Sqrt(covarianceMatrix[i, i]); 
+            }            
             return volatilities;
         }
     }

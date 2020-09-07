@@ -42,41 +42,5 @@ namespace PricingApp.utils
             return assetsValues;
         }
 
-        public static void dispMatrix(double[,] myassetsValues)
-        {
-            int n = myassetsValues.GetLength(0);
-
-            Console.WriteLine("LogRendements");
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    Console.Write(myassetsValues[i, j] + "\t");
-                }
-                Console.Write("\n");
-            }
-        }
-
-        static void Main(string[] args)
-        {
-            // header
-            Console.WriteLine("******************************");
-            Console.WriteLine("*    WREmodelingLogReturns in C#   *");
-            Console.WriteLine("******************************");
-
-            // sample data
-            double[,] returns = { {0.05, -0.1, 0.6}, {-0.001, -0.4, 0.56}, {0.7, 0.001, 0.12}, {-0.3, 0.2, -0.1},
-                                {0.1, 0.2, 0.3}};
-
-            // call WRE via computeCovarianceMatrix encapsulation
-            double[,] myassetsValues = computeCovarianceMatrix(returns);
-
-            // display result
-            dispMatrix(myassetsValues);
-
-            // ending the program            
-            Console.WriteLine("\nType enter to exit");
-            Console.ReadKey(true);
-        }
     }
 }

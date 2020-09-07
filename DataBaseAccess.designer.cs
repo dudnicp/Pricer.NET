@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ProjetPricing
+namespace DataBaseAccessContext
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -39,7 +39,7 @@ namespace ProjetPricing
     #endregion
 		
 		public DataBaseAccessDataContext() : 
-				base(global::ProjetPricing.Properties.Settings.Default.DotNetDBConnectionString, mappingSource)
+				base(global::PricingApp.Properties.Settings.Default.DotNetDBConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

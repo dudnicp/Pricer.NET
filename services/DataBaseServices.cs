@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DataBaseAccessContext;
 using PricingLibrary.FinancialProducts;
 
-namespace ProjetPricing.services
+namespace PricingApp.services
 {
-    class DataBaseServices
+    public class DataBaseServices
     {
         public static List<Share> getShares()
         {

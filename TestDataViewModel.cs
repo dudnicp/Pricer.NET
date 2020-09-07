@@ -172,10 +172,10 @@ namespace PricingApp
                 if(value != optionUnderlyingShares)
                 {
                     optionUnderlyingShares = value;
-                    NotifyPropertyChanged();
+                    NotifyPropertyChanged("OptionUnderlyingShares");
                 }
             }
-        } 
+        }
 
         private ICommand addUnderlyingShare;
         public ICommand AddUnderlyingShare
@@ -189,6 +189,21 @@ namespace PricingApp
                 return addUnderlyingShare;
             }
         }
+
+        private ICommand removeUnderlyingShare;
+        public ICommand RemoveUnderlyingShare
+        {
+            get
+            {
+                if (removeUnderlyingShare == null)
+                {
+                    removeUnderlyingShare = new RelayCommand<Share>((share) => OptionUnderlyingShares.Remove(share));
+                }
+                return removeUnderlyingShare;
+            }
+        }
+
+
 
         public TestDataViewModel()
         {

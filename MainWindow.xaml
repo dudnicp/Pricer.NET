@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PricingApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="330" Width="930">
+        Title="MainWindow" Height="630" Width="930">
     <Window.DataContext>
         <local:TestDataViewModel></local:TestDataViewModel>
     </Window.DataContext>
@@ -20,16 +20,16 @@
             <RowDefinition Height="30*"/>
             <RowDefinition Height="30*"/>
             <RowDefinition Height="30*"/>
-            <RowDefinition Height="30*"/>
-            <RowDefinition Height="30*"/>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="300*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300*"/>
             <ColumnDefinition Width="300*"/>
-            <ColumnDefinition Width="30*"/>
-            <ColumnDefinition Width="300*"/>
+            <ColumnDefinition Width="150*"/>
+            <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
-        <Label x:Name="mainLabel" Content="Caractéristiques de l'option" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"/>
+        <Label x:Name="mainLabel" FontWeight="Bold" FontSize="15" Content="Caractéristiques de l'option" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4" HorizontalAlignment="Center"/>
         
         <Label x:Name="titleLabel" Content="Titre de l'option" Grid.Column="0" Grid.Row="1"/>
         <Label x:Name="strikeLabel" Content="Strike de l'option" Grid.Column="0" Grid.Row="2"/>
@@ -40,7 +40,7 @@
         <Label x:Name="rebalancingPeriodLabel" Content="Durée de la période de rebalancement" Grid.Column="0" Grid.Row="7" />
         <Label x:Name="estimationPeriodLabel" Content="Durée de la période d'estilatimation" Grid.Column="0" Grid.Row="8" />
 
-        
+
         <TextBox x:Name="titleField" Grid.Row="1" Grid.Column="1"/>
         <TextBox x:Name="strikeField" Grid.Row="2" Grid.Column="1"/>
         <DatePicker x:Name="maturityDatePicker" Grid.Row="3" Grid.Column="1"/>
@@ -50,16 +50,17 @@
         <TextBox x:Name="rebalancingPeriodField" Grid.Row="7" Grid.Column="1"/>
         <TextBox x:Name="estimationPeriodField" Grid.Row="8" Grid.Column="1"/>
 
-        <Button x:Name="addUnderlyingShare" Content="Associer nouveau sous-jacent" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" Command="{Binding AddUnderlyingShare}"/>
-        <Button x:Name="addOptionButton" Content="Ajouter l'option" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2" />
+        <Button x:Name="addOptionButton" Margin="2" Content="Ajouter l'option" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" />
 
         <Label x:Name="underlyingSharesLabel" Content="Sous-Jacents associés" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" />
-        <ListBox x:Name="underlyingSharesPanel" Grid.Column="3" Grid.Row="2" Grid.RowSpan="9" ItemsSource="{Binding OptionUnderlyingShares}">
+        <Button x:Name="addUnderlyingShareButton" Content="Ajouter" Margin="10,0,1,0" Grid.Column="2" Grid.Row="2" Command="{Binding AddUnderlyingShare}"/>
+        <Button x:Name="removeUnderlyingShareButton" Content="Retirer" Margin="1,0,10,0" Grid.Column="3" Grid.Row="2" Command="{Binding RemoveUnderlyingShare}" CommandParameter="{Binding ElementName=underlyingSharesListBox, Path=SelectedItem}"/>
+        <ListBox x:Name="underlyingSharesListBox" Margin ="10" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="7" ItemsSource="{Binding OptionUnderlyingShares}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="hello"></Label>
-                        <Label Content="world"></Label>
+                        <Label Content="{Binding Id}"></Label>
+                        <Label Content="{Binding Name}"></Label>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

@@ -63,13 +63,11 @@ namespace PricingApp.services
                 deltas = newDeltas;
             }
 
-            double sum = 0;
+            double riskyAsset = 0;
             for(int i = 0; i < spots.Length; i++)
             {
-                sum += deltas[i] * spots[i];
+                riskyAsset += deltas[i] * spots[i];
             }
-
-            results.Portfolio.RiskyAsset = sum;
 
             if(periodIndex == 0)
             {
@@ -78,12 +76,14 @@ namespace PricingApp.services
             else
             {
                 results.PortfolioValue = results.Portfolio.RiskyAsset + results.Portfolio.NonRiskyAsset * Math.Exp(
-                    r * DayCount.CountBusinessDays(pricingData.First().Date, pricingData.Last().Date) / 365);
+                    r * (pricingData.Last().Date - pricingData.First().Date).Days / 365);
             }
 
-            results.Portfolio.NonRiskyAsset = results.PortfolioValue - results.Portfolio.RiskyAsset;
+            double nonRiskyAsset = results.PortfolioValue - riskyAsset;
+            results.Portfolio = new HedgingPortfolio(riskyAsset, nonRiskyAsset);
             results.Payoff = ((optPrice - optionPricer.Opt.Strike) > 0) ? (optPrice - optionPricer.Opt.Strike) : 0;
             results.TrackingError = (results.PortfolioValue - results.Payoff) / optPrice;
+            results.Date = pricingData.Last().Date;
 
             deltas = newDeltas;
         }

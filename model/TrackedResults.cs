@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace PricingApp.model
 {
-    public class TrackedResults
+    public class TrackedResults : INotifyPropertyChanged
     {
         private HedgingPortfolio portfolio = new HedgingPortfolio();
         private double portfolioValue = 0;
@@ -14,12 +16,94 @@ namespace PricingApp.model
         private DateTime date = new DateTime();
         private double trackingError = 0;
 
-        public HedgingPortfolio Portfolio { get { return portfolio; } }
-        public double PortfolioValue { get { return portfolioValue; } set { portfolioValue = value; } }
-        public double Payoff { get { return payoff; } set { payoff = value; } }
-        public DateTime Date { get { return date; } set { date = value; } }
-        public double TrackingError {  get { return trackingError; } set { trackingError = value; } }
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        public void NotifyPropertyChanged([CallerMemberName] string str = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(str));
+        }
+
+        public HedgingPortfolio Portfolio 
+        { 
+            get 
+            { 
+                return portfolio; 
+            } 
+            
+            set
+            {
+                if(portfolio != value)
+                {
+                    portfolio = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double PortfolioValue
+        {
+            get
+            {
+                return portfolioValue;
+            }
+
+            set
+            {
+                if (portfolioValue != value)
+                {
+                    portfolioValue = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double Payoff
+        {
+            get
+            {
+                return payoff;
+            }
+
+            set
+            {
+                if (payoff != value)
+                {
+                    payoff = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public DateTime Date
+        {
+            get
+            {
+                return date;
+            }
+
+            set
+            {
+                if (date != value)
+                {
+                    date = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+        public double TrackingError
+        {
+            get
+            {
+                return trackingError;
+            }
+
+            set
+            {
+                if (trackingError != value)
+                {
+                    trackingError = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
 
         public TrackedResults(HedgingPortfolio portfolio, double portfolioValue, double optionPayOff, DateTime date, double trackingError)
         {

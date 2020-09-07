@@ -87,7 +87,7 @@ namespace PricingApp.model
             return evolution;
         }
 
-
+        /* Retourne un tableau comprenant la volatilité et le spot avant rebalancement */
         protected (double, double) getVolatilityAndSpot(List<DataFeed> data, int size)
         {
             double vol, spot;
@@ -98,11 +98,12 @@ namespace PricingApp.model
                 values[i] = d.PriceList.Values.First();
                 i++;
             }
-            spot = Decimal.ToDouble(values[size - 1]);
+            spot = Decimal.ToDouble(values.Last());
             vol = ComputeSd(values, size);
             return (vol, spot);
         }
 
+        /* Calcule l'écart type */
         protected double ComputeSd(Decimal[] values, int size)
         {
             int i;

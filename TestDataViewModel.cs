@@ -26,6 +26,7 @@ namespace PricingApp
         private int rebalancingPeriod;
         private int estimationPeriod;
         private ObservableCollection<Share> optionUnderlyingShares;
+        private List<Share> aviableShares;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -177,6 +178,14 @@ namespace PricingApp
             }
         }
 
+        public List<Share> AviableShares
+        {
+            get
+            {
+                return aviableShares;
+            }
+        }
+
         private ICommand addUnderlyingShare;
         public ICommand AddUnderlyingShare
         {
@@ -184,9 +193,31 @@ namespace PricingApp
             {
                 if (addUnderlyingShare == null)
                 {
-                    addUnderlyingShare = new RelayCommand<object>((obj) => OptionUnderlyingShares.Add(new Share("name", "id")));
+                    addUnderlyingShare = new RelayCommand<object>((obj) =>
+                    {
+                        ShareSelectionWindow shareSelectionWindow = new ShareSelectionWindow();
+                        shareSelectionWindow.Show();
+                    });
                 }
                 return addUnderlyingShare;
+            }
+        }
+
+        private ICommand confirmUnderlyingShare;
+        public ICommand ConfirmUnderlyingShare
+        {
+            get
+            {
+                if (confirmUnderlyingShare == null)
+                {
+                    confirmUnderlyingShare = new RelayCommand<Share>((share) => 
+                    {
+                        OptionUnderlyingShares.Add(share);
+
+                        AviableShares.Remove(share);
+                    });
+                }
+                return confirmUnderlyingShare;
             }
         }
 
@@ -208,6 +239,7 @@ namespace PricingApp
         public TestDataViewModel()
         {
             optionUnderlyingShares = new ObservableCollection<Share>();
+            aviableShares = DataBaseServices.getShares();
         }
     }
 }

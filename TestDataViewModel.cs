@@ -226,7 +226,7 @@ namespace PricingApp
             Share share1 = new Share("ACCOR SA", "AC FP");
             Share share2 = new Share("ALSTOM", "ALO FP");
             Share[] underlyingAsset = new Share[]{share1, share2 };
-            VanillaCall opt0 = new VanillaCall("option", share1, new DateTime(2020, 12, 31), 0.1);
+            VanillaCall opt0 = new VanillaCall("option", share1, new DateTime(2180, 2, 2), 5);
             BasketOption opt = new BasketOption("option", underlyingAsset, new double []{ 0.7, 0.3 }, new DateTime(2020, 12, 31), 0.1);
 
             //BasketOptionPricer pricer = new BasketOptionPricer(opt);
@@ -236,21 +236,20 @@ namespace PricingApp
 
             // portfolio value 
             ChartValues <DataChartViewModel> chartValues = new ChartValues<DataChartViewModel>();
-            List<TrackedResults> trackedList = manager.computePortfolioEvolution(new DateTime(2020, 1, 1), new DateTime(2025, 12, 1), 10, 5);
-            TrackedResults res;
+            List<TrackedResults> trackedList = manager.computePortfolioEvolution(new DateTime(2020, 1, 1), new DateTime(2025, 12, 1), 100, 10);
             // option value
             ChartValues<DataChartViewModel> chartValues2 = new ChartValues<DataChartViewModel>();
             // tracking error
             ChartValues<DataChartViewModel> chartValues3 = new ChartValues<DataChartViewModel>();
+            ChartValues<DataChartViewModel> chartValues4 = new ChartValues<DataChartViewModel>();
 
 
-            for (int i = 0; i < trackedList.Count; i++)
+            foreach(TrackedResults res in trackedList)
             {
-                TrackedResults trackedResults = new TrackedResults(trackedList[i]);
-                res = trackedResults;
                 chartValues.Add(new DataChartViewModel(res.Date, res.PortfolioValue));
                 chartValues2.Add(new DataChartViewModel(res.Date, res.Payoff));
                 chartValues3.Add(new DataChartViewModel(res.Date, res.TrackingError));
+                chartValues4.Add(new DataChartViewModel(res.Date, (res.PortfolioValue - res.Payoff) / res.TrackingError));
             }
 
             
@@ -269,6 +268,11 @@ namespace PricingApp
                 new LineSeries // tracking error value
                 {
                     Values = chartValues3,
+                    PointGeometrySize = 5
+                },
+                new LineSeries // optionPrice
+                {
+                    Values = chartValues4,
                     PointGeometrySize = 5
                 },
 

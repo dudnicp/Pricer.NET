@@ -17,7 +17,6 @@ namespace PricingApp.services
         IDataFeedProvider dataFeedProvider;
         private OptionPricer optionPricer;
         private TrackedResults results;
-        private const double r = 0.01;
         private double[] deltas;
 
         public HedgingPortfolio Portfolio { get; }
@@ -45,15 +44,15 @@ namespace PricingApp.services
 
             while (DateTime.Compare(pricingData.Last().Date, testEnd) < 0 && ((i+1) * rebalancingPeriod + estimationPeriod) < data.Count)
             {
-                updateResults(pricingData, i);
+                updateResults(pricingData, i, data.GetRange(i*rebalancingPeriod, rebalancingPeriod));
                 res.Add(new TrackedResults(results));
-                i += 1;
+                i ++;
                 pricingData = data.GetRange(i * rebalancingPeriod, estimationPeriod);
             }
             return res;
         }
 
-        private void updateResults(List<DataFeed> pricingData, int periodIndex)
+        private void updateResults(List<DataFeed> pricingData, int periodIndex, List<DataFeed> rebalancingData)
         {
 
             CompletePricingResults pricingResult = optionPricer.getPricingResults(pricingData);
@@ -63,7 +62,7 @@ namespace PricingApp.services
 
             if(periodIndex == 0)
             {
-                deltas = newDeltas;
+                Array.Copy(newDeltas, deltas, newDeltas.Length);
             }
 
             double riskyAsset = 0;
@@ -78,8 +77,9 @@ namespace PricingApp.services
             }
             else
             {
-                results.PortfolioValue = results.Portfolio.RiskyAsset + results.Portfolio.NonRiskyAsset * Math.Exp(
-                    r * (pricingData.Last().Date - pricingData.First().Date).Days / 365);
+                int nDays = (rebalancingData.Last().Date - rebalancingData.First().Date).Days;
+
+                results.PortfolioValue = riskyAsset + results.Portfolio.NonRiskyAsset * RiskFreeRateProvider.GetRiskFreeRateAccruedValue(nDays / 365.0);
             }
 
             double nonRiskyAsset = results.PortfolioValue - riskyAsset;

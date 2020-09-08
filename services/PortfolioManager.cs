@@ -44,7 +44,12 @@ namespace PricingApp.services
 
             while (DateTime.Compare(pricingData.Last().Date, testEnd) < 0 && ((i+1) * rebalancingPeriod + estimationPeriod) < data.Count)
             {
-                updateResults(pricingData, i, data.GetRange(i*rebalancingPeriod, rebalancingPeriod));
+                int nRebalacingDays = 0;
+                if(i != 0)
+                {
+                    nRebalacingDays = (pricingData.Last().Date - data[(i - 1) * rebalancingPeriod + estimationPeriod].Date).Days;
+                }
+                updateResults(pricingData, i, nRebalacingDays);
                 res.Add(new TrackedResults(results));
                 i ++;
                 pricingData = data.GetRange(i * rebalancingPeriod, estimationPeriod);
@@ -52,7 +57,7 @@ namespace PricingApp.services
             return res;
         }
 
-        private void updateResults(List<DataFeed> pricingData, int periodIndex, List<DataFeed> rebalancingData)
+        private void updateResults(List<DataFeed> pricingData, int periodIndex, int nRebalancingDays)
         {
 
             CompletePricingResults pricingResult = optionPricer.getPricingResults(pricingData);
@@ -77,9 +82,7 @@ namespace PricingApp.services
             }
             else
             {
-                int nDays = (rebalancingData.Last().Date - rebalancingData.First().Date).Days;
-
-                results.PortfolioValue = riskyAsset + results.Portfolio.NonRiskyAsset * RiskFreeRateProvider.GetRiskFreeRateAccruedValue(nDays / 365.0);
+                results.PortfolioValue = riskyAsset + results.Portfolio.NonRiskyAsset * RiskFreeRateProvider.GetRiskFreeRateAccruedValue(nRebalancingDays / 365.0);
             }
 
             double nonRiskyAsset = results.PortfolioValue - riskyAsset;

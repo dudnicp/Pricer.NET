@@ -43,10 +43,10 @@ namespace PricingApp.services
             int i = 0;
             List<DataFeed> pricingData = data.GetRange(i * rebalancingPeriod, estimationPeriod);
 
-            while (DateTime.Compare(pricingData.Last().Date, testEnd) < 0)
+            while (DateTime.Compare(pricingData.Last().Date, testEnd) < 0 && ((i+1) * rebalancingPeriod + estimationPeriod) < data.Count)
             {
                 updateResults(pricingData, i);
-                res.Add(results);
+                res.Add(new TrackedResults(results));
                 i += 1;
                 pricingData = data.GetRange(i * rebalancingPeriod, estimationPeriod);
             }
@@ -84,7 +84,7 @@ namespace PricingApp.services
 
             double nonRiskyAsset = results.PortfolioValue - riskyAsset;
             results.Portfolio = new HedgingPortfolio(riskyAsset, nonRiskyAsset);
-            results.Payoff = ((optPrice - optionPricer.Opt.Strike) > 0) ? (optPrice - optionPricer.Opt.Strike) : 0;
+            results.Payoff = optionPricer.Opt.GetPayoff(pricingData.Last().PriceList);
             results.TrackingError = (results.PortfolioValue - results.Payoff) / optPrice;
             results.Date = pricingData.Last().Date;
 

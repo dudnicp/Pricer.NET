@@ -223,29 +223,55 @@ namespace PricingApp
                 .X(dayModel => (double)dayModel.Date.Ticks / TimeSpan.FromDays(1).Ticks)
                 .Y(dayModel => dayModel.Value);
 
-            Share share = new Share("ACCOR SA", "AC FP");
-            VanillaCall opt = new VanillaCall("option", share, new DateTime(2020, 12, 31), 10);
-            VanillaCallPricer pricer = new VanillaCallPricer(opt);
+            Share share1 = new Share("ACCOR SA", "AC FP");
+            Share share2 = new Share("ALSTOM", "ALO FP");
+            Share[] underlyingAsset = new Share[]{share1, share2 };
+            VanillaCall opt0 = new VanillaCall("option", share1, new DateTime(2020, 12, 31), 0.1);
+            BasketOption opt = new BasketOption("option", underlyingAsset, new double []{ 0.7, 0.3 }, new DateTime(2020, 12, 31), 0.1);
+
+            //BasketOptionPricer pricer = new BasketOptionPricer(opt);
+            VanillaCallPricer pricer = new VanillaCallPricer(opt0);
 
             PortfolioManager manager = new PortfolioManager(pricer, new SimulatedDataFeedProvider());
 
+            // portfolio value 
             ChartValues <DataChartViewModel> chartValues = new ChartValues<DataChartViewModel>();
+            List<TrackedResults> trackedList = manager.computePortfolioEvolution(new DateTime(2020, 1, 1), new DateTime(2025, 12, 1), 10, 5);
+            TrackedResults res;
+            // option value
+            ChartValues<DataChartViewModel> chartValues2 = new ChartValues<DataChartViewModel>();
+            // tracking error
+            ChartValues<DataChartViewModel> chartValues3 = new ChartValues<DataChartViewModel>();
 
-            foreach (TrackedResults res in
-                    manager.computePortfolioEvolution
-                    (new DateTime(2020, 1, 1), new DateTime(2020, 12, 1), 50, 30))
+
+            for (int i = 0; i < trackedList.Count; i++)
             {
+                TrackedResults trackedResults = new TrackedResults(trackedList[i]);
+                res = trackedResults;
                 chartValues.Add(new DataChartViewModel(res.Date, res.PortfolioValue));
+                chartValues2.Add(new DataChartViewModel(res.Date, res.Payoff));
+                chartValues3.Add(new DataChartViewModel(res.Date, res.TrackingError));
             }
 
-
+            
             seriesCollection = new SeriesCollection(dayConfig)
             {
-                new LineSeries // payoff option
+                new LineSeries // portfolio value
                 {
                     Values = chartValues,
-                    PointGeometrySize = 25
-                },             
+                    PointGeometrySize = 5
+                },
+                new LineSeries // payoff value
+                {
+                    Values = chartValues2,
+                    PointGeometrySize = 5
+                },
+                new LineSeries // tracking error value
+                {
+                    Values = chartValues3,
+                    PointGeometrySize = 5
+                },
+
             };
             Formatter = value => new System.DateTime((long)(value * TimeSpan.FromDays(1).Ticks)).ToString("t");
         }

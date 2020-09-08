@@ -32,9 +32,10 @@ namespace PricingApp.services
         }
 
         // Crée une liste de resultats (l'évolution du portefeuille de l'option sur la durée demandée)
-        public void computePortfolioEvolution(DateTime testStart, DateTime testEnd,
+        public List<TrackedResults> computePortfolioEvolution(DateTime testStart, DateTime testEnd,
                             int rebalancingPeriod, int estimationPeriod)
         {
+            List<TrackedResults> res = new List<TrackedResults>();
             List<DataFeed> data = dataFeedProvider.GetDataFeed(optionPricer.Opt.UnderlyingShareIds, testStart,
                 optionPricer.Opt.Maturity); // Données totales
 
@@ -45,9 +46,11 @@ namespace PricingApp.services
             while (DateTime.Compare(pricingData.Last().Date, testEnd) < 0)
             {
                 updateResults(pricingData, i);
+                res.Add(results);
                 i += 1;
                 pricingData = data.GetRange(i * rebalancingPeriod, estimationPeriod);
             }
+            return res;
         }
 
         private void updateResults(List<DataFeed> pricingData, int periodIndex)
@@ -87,42 +90,5 @@ namespace PricingApp.services
 
             deltas = newDeltas;
         }
-
-
-
-        /*protected Dictionary<string, (double, double)> getVolatilityAndSpot(List<DataFeed> data)
-        {
-            Dictionary<string, (double, double)> sharesData = new Dictionary<string, (double, double)>();
-            Dictionary<string, List<decimal>> shareSpots = new Dictionary<string, List<decimal>>();
-            double vol, spot;
-            foreach (DataFeed dataFeed in data)
-            {
-                foreach(KeyValuePair<string, decimal> kvp in dataFeed.PriceList)
-                {
-                    shareSpots[]
-                }
-            }
-            spot = Decimal.ToDouble(values.Last());
-            vol = ComputeSd(values);
-            return (vol, spot);
-        }
-
-        protected double ComputeSd(List<decimal> values)
-        {
-            decimal moyenne = 0;
-            double moy, var = 0;
-            foreach (decimal val in values)
-            {
-                moyenne += val;
-            }
-            moy = Decimal.ToDouble(moyenne / values.Count);
-
-            foreach(decimal val in values)
-            {
-                var += Math.Pow(moy - Decimal.ToDouble(val), 2);
-            }
-            var = Math.Sqrt(var);
-            return var;
-        }*/
     }
 }

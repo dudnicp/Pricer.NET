@@ -20,7 +20,7 @@ namespace PricingApp.utils
     class CovarianceComputing
     {
         // import WRE dlls
-        [DllImport("wre-modeling-c-4.1.dll", EntryPoint = "WREmodelingCov", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("wre-ensimag-c-4.1.dll", EntryPoint = "WREmodelingCov", CallingConvention = CallingConvention.Cdecl)]
 
         // declaration
         public static extern int WREmodelingCov(

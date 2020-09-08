@@ -12,6 +12,13 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using LiveCharts;
+using LiveCharts.Configurations;
+using LiveCharts.Wpf;
+using LiveCharts.Defaults;
+using System.CodeDom;
+using PricingApp.viewModel;
+using PricingApp.services.optionPricers;
 
 namespace PricingApp
 {
@@ -26,6 +33,7 @@ namespace PricingApp
         private int rebalancingPeriod;
         private int estimationPeriod;
         private ObservableCollection<Share> optionUnderlyingShares;
+        private SeriesCollection seriesCollection;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -33,6 +41,8 @@ namespace PricingApp
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(str));
         }
+
+        public SeriesCollection SeriesCollection { get { return seriesCollection; } }
 
         public string OptionName
         {
@@ -208,6 +218,38 @@ namespace PricingApp
         public TestDataViewModel()
         {
             optionUnderlyingShares = new ObservableCollection<Share>();
+
+            var dayConfig = Mappers.Xy<DataChartViewModel>()
+                .X(dayModel => (double)dayModel.Date.Ticks / TimeSpan.FromDays(1).Ticks)
+                .Y(dayModel => dayModel.Value);
+
+            Share share = new Share("ACCOR SA", "AC FP");
+            VanillaCall opt = new VanillaCall("option", share, new DateTime(2020, 12, 31), 10);
+            VanillaCallPricer pricer = new VanillaCallPricer(opt);
+
+            PortfolioManager manager = new PortfolioManager(pricer, new SimulatedDataFeedProvider());
+
+            ChartValues <DataChartViewModel> chartValues = new ChartValues<DataChartViewModel>();
+
+            foreach (TrackedResults res in
+                    manager.computePortfolioEvolution
+                    (new DateTime(2020, 1, 1), new DateTime(2020, 12, 1), 50, 30))
+            {
+                chartValues.Add(new DataChartViewModel(res.Date, res.PortfolioValue));
+            }
+
+
+            seriesCollection = new SeriesCollection(dayConfig)
+            {
+                new LineSeries // payoff option
+                {
+                    Values = chartValues,
+                    PointGeometrySize = 25
+                },             
+            };
+            Formatter = value => new System.DateTime((long)(value * TimeSpan.FromDays(1).Ticks)).ToString("t");
         }
+        public Func<double, string> Formatter { get; set; }
+
     }
 }

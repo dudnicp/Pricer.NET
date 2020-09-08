@@ -24,6 +24,7 @@ namespace PricingApp
         public MainWindow()
         {
             InitializeComponent();
+            //this.DataContext = 
         }
     }
 }

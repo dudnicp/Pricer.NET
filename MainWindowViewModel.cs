@@ -16,8 +16,11 @@ using System.Windows;
 
 namespace PricingApp
 {
-    public class TestDataViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
+
+
+
         public class ShareAndWeight
         {
             public Share Share { get; set; }
@@ -262,7 +265,7 @@ namespace PricingApp
         }
 
 
-        public TestDataViewModel()
+        public MainWindowViewModel()
         {
             optionUnderlyingShares = new ObservableCollection<ShareAndWeight>();
             aviableShares = new ObservableCollection<Share>(DataBaseServices.getShares());

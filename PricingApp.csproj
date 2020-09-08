@@ -108,8 +108,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataBaseAccess.dbml</DependentUpon>
     </Compile>
+    <Compile Include="model\OptionData.cs" />
     <Compile Include="model\CompletePricingResults.cs" />
+    <Compile Include="model\TestData.cs" />
     <Compile Include="model\TrackedResults.cs" />
+    <Compile Include="viewModel\OptionDataViewModel.cs" />
+    <Compile Include="viewModel\OptionListViewModel.cs" />
+    <Compile Include="viewModel\TestDataViewModel.cs" />
+    <Compile Include="view\OptionDataView.xaml.cs">
+      <DependentUpon>OptionDataView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\OptionListView.xaml.cs">
+      <DependentUpon>OptionListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\TestDataView.xaml.cs">
+      <DependentUpon>TestDataView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -133,10 +147,22 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="view\OptionDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\OptionListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\TestDataView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="services\PortfolioManager.cs" />
-    <Compile Include="TestDataViewModel.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

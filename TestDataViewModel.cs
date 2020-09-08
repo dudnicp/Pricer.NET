@@ -12,11 +12,19 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows;
 
 namespace PricingApp
 {
     public class TestDataViewModel : INotifyPropertyChanged
     {
+        public class ShareAndWeight
+        {
+            public Share Share { get; set; }
+            public double Weight { get; set; }
+        }
+
+
         private string optionName;
         private double optionStrike;
         private DateTime optionMaturity;
@@ -25,10 +33,11 @@ namespace PricingApp
         private IDataFeedProvider dataProvider;
         private int rebalancingPeriod;
         private int estimationPeriod;
-        private ObservableCollection<Share> optionUnderlyingShares;
-        private List<Share> aviableShares;
+        private ObservableCollection<ShareAndWeight> optionUnderlyingShares;
+        private ObservableCollection<Share> aviableShares;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
 
         public void NotifyPropertyChanged([CallerMemberName] string str="")
         {
@@ -162,7 +171,7 @@ namespace PricingApp
             }
         }
 
-        public ObservableCollection<Share> OptionUnderlyingShares
+        public ObservableCollection<ShareAndWeight> OptionUnderlyingShares
         {
             get
             {
@@ -178,11 +187,19 @@ namespace PricingApp
             }
         }
 
-        public List<Share> AviableShares
+        public ObservableCollection<Share> AviableShares
         {
             get
             {
                 return aviableShares;
+            }
+            set
+            {
+                if(value != aviableShares)
+                {
+                    aviableShares = value;
+                    NotifyPropertyChanged("AviableShares");
+                }
             }
         }
 
@@ -193,31 +210,14 @@ namespace PricingApp
             {
                 if (addUnderlyingShare == null)
                 {
-                    addUnderlyingShare = new RelayCommand<object>((obj) =>
+                    addUnderlyingShare = new RelayCommand<Share>((share) =>
                     {
-                        ShareSelectionWindow shareSelectionWindow = new ShareSelectionWindow();
-                        shareSelectionWindow.Show();
-                    });
-                }
-                return addUnderlyingShare;
-            }
-        }
 
-        private ICommand confirmUnderlyingShare;
-        public ICommand ConfirmUnderlyingShare
-        {
-            get
-            {
-                if (confirmUnderlyingShare == null)
-                {
-                    confirmUnderlyingShare = new RelayCommand<Share>((share) => 
-                    {
-                        OptionUnderlyingShares.Add(share);
-
+                        OptionUnderlyingShares.Add(new ShareAndWeight() { Share = share, Weight = 1});
                         AviableShares.Remove(share);
                     });
                 }
-                return confirmUnderlyingShare;
+                return addUnderlyingShare;
             }
         }
 
@@ -228,18 +228,44 @@ namespace PricingApp
             {
                 if (removeUnderlyingShare == null)
                 {
-                    removeUnderlyingShare = new RelayCommand<Share>((share) => OptionUnderlyingShares.Remove(share));
+                    removeUnderlyingShare = new RelayCommand<ShareAndWeight>((shareAndWeight) =>
+                    {
+                        OptionUnderlyingShares.Remove(shareAndWeight);
+                        
+                        AviableShares.Add(shareAndWeight?.Share);
+                    });
                 }
                 return removeUnderlyingShare;
             }
         }
 
+        private ICommand addOption;
+
+        public ICommand AddOption
+        {
+            get
+            {
+                if(addOption == null)
+                {
+                    addOption = new RelayCommand<object>((obj) =>
+                    {
+                        double sum = 0;
+                        foreach (ShareAndWeight sw in optionUnderlyingShares)
+                        {
+                            sum += sw.Weight;
+                        }
+                        MessageBox.Show(sum.ToString());
+                    });
+                }
+                return addOption;
+            }
+        }
 
 
         public TestDataViewModel()
         {
-            optionUnderlyingShares = new ObservableCollection<Share>();
-            aviableShares = DataBaseServices.getShares();
+            optionUnderlyingShares = new ObservableCollection<ShareAndWeight>();
+            aviableShares = new ObservableCollection<Share>(DataBaseServices.getShares());
         }
     }
 }

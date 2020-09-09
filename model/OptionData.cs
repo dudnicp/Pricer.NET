@@ -1,4 +1,5 @@
-﻿using PricingLibrary.FinancialProducts;
+﻿using PricingApp.services;
+using PricingLibrary.FinancialProducts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +16,12 @@ namespace PricingApp.model
         {
             public Share Share { get; set; }
             public double Weight { get; set; }
+
+            public ShareAndWeight(Share share, double weight)
+            {
+                Share = share;
+                Weight = weight;
+            }
         }
 
         private string name;
@@ -104,5 +111,73 @@ namespace PricingApp.model
                 }
             }
         }
+
+        public OptionData()
+        {
+            UnderlyingShares = new ObservableCollection<ShareAndWeight>();
+            AviableShares = new ObservableCollection<Share>(DataBaseServices.getShares());
+        }
+
+        public OptionData(OptionData other)
+        {
+            copy(other);
+        }
+
+        public void InitDefault()
+        {
+            Name = "NouvelleOption";
+            Strike = 10;
+            Maturity = new DateTime(2030, 12, 31);
+            addUnderlyingShare(AviableShares.First());
+        }
+
+        public void copy(OptionData other)
+        {
+            Name = other.Name;
+            Strike = other.Strike;
+            Maturity = new DateTime(other.Maturity.Ticks);
+            AviableShares = new ObservableCollection<Share>(other.AviableShares);
+            UnderlyingShares = new ObservableCollection<ShareAndWeight>(other.UnderlyingShares);
+        }
+
+        public void addUnderlyingShare(Share share, double weight = 1)
+        {
+            UnderlyingShares.Add(new ShareAndWeight(share, weight));
+            AviableShares.Remove(share);
+        }
+
+        public void removeUnderlyingShare(Share share)
+        {
+            bool found = false;
+            int i = 0;
+            while (!found && i < UnderlyingShares.Count)
+            {
+                if(share == UnderlyingShares[i].Share)
+                {
+                    UnderlyingShares.Remove(UnderlyingShares[i]);
+                    AviableShares.Add(share);
+                    found = true;
+                }
+                i++;
+            }
+        }
+
+        public void addUnderlyingShare(string Id, double weight = 1)
+        {
+            bool found = false;
+            int i = 0;
+            while (!found && i < AviableShares.Count)
+            {
+                System.Diagnostics.Debug.WriteLine(AviableShares[i].Id + "h");
+                if ((Id + "     ").Equals(AviableShares[i].Id))
+                {
+                    UnderlyingShares.Add(new ShareAndWeight(AviableShares[i], weight));
+                    AviableShares.Remove(AviableShares[i]);
+                    found = true;
+                }
+                i++;
+            }
+        }
+
     }
 }

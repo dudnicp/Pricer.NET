@@ -19,10 +19,10 @@
             <ColumnDefinition Width="3"/>
             <ColumnDefinition Width="450"/>
         </Grid.ColumnDefinitions>
-        <uc:OptionDataView Grid.RowSpan="3"/>
+        <uc:OptionDataView x:Name="optionDataUC" Grid.RowSpan="3"/>
         <Rectangle Width="3" Grid.Column="1" Grid.RowSpan="3" Fill="Black"/>
         <Rectangle Height="3" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Fill="Black"/>
-        <uc:OptionListView Grid.Column="2"/>
-        <uc:TestDataView Grid.Row="2" Grid.Column="2" />
+        <uc:OptionListView x:Name="optionListUC" Grid.Column="2"/>
+        <uc:TestDataView x:Name="testDataUC" Grid.Row="2" Grid.Column="2" />
     </Grid>
 </Window>

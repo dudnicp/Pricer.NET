@@ -7,9 +7,6 @@
     xmlns:local="clr-namespace:PricingApp.viewModel"
     mc:Ignorable="d"
     Title="Graphs" Height="630" Width="930">
-    <Window.DataContext>
-        <local:GraphViewModel></local:GraphViewModel>
-    </Window.DataContext>
     <StackPanel>
 
         <lvc:CartesianChart Height="200" Series="{Binding SeriesCollection}">

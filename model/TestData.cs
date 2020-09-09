@@ -144,8 +144,7 @@ namespace PricingApp.model
         {
             TestStart = new DateTime(2020, 1, 1);
             TestEnd = new DateTime(2020, 12, 31);
-            AviableDataFeedProviders = new ObservableCollection<IDataFeedProvider>() { new SimulatedDataFeedProvider(),
-                new SemiHistoricDataFeedProvider()};
+            AviableDataFeedProviders = new ObservableCollection<IDataFeedProvider>() { new SimulatedDataFeedProvider()};
             SelectedDataFeedProvider = AviableDataFeedProviders.First();
             RebalancingPeriod = 60;
             EstimationPeriod = 30;

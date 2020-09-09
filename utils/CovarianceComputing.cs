@@ -39,13 +39,13 @@ namespace PricingApp.utils
             int info = 0;
             int res;
             res = WREmodelingCov(ref dataSize, ref nbAssets, returns, covMatrix, ref info);
-            /*if (res != 0)
+            if (res != 0)
             {
                 if (res < 0)
                     throw new Exception("ERROR: WREmodelingCov encountred a problem. See info parameter for more details");
                 else
                     throw new Exception("WARNING: WREmodelingCov encountred a problem. See info parameter for more details");
-            }*/
+            }
             return covMatrix;
         }        
     }

@@ -14,7 +14,7 @@ namespace PricingApp.services
 {
     public class PortfolioManager
     {
-        IDataFeedProvider dataFeedProvider;
+        private IDataFeedProvider dataFeedProvider;
         private OptionPricer optionPricer;
         private TrackedResults results;
         private double[] deltas;

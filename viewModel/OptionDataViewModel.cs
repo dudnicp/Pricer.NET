@@ -6,7 +6,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using static PricingApp.model.OptionData;
 
 namespace PricingApp.viewModel
 {
@@ -90,7 +92,35 @@ namespace PricingApp.viewModel
                 {
                     saveChanges = new RelayCommand<Object>(obj => 
                     {
-                        OptionData.copy(TempOptionData);
+                        try
+                        {
+                            if(OptionData == null)
+                            {
+                                throw new Exception("Aucune Option n'a été selectionnée pour être modifiée");
+                            }
+                            if(OptionData.Strike < 0)
+                            {
+                                throw new Exception("Strike invalide");
+                            }
+                            if(OptionData.UnderlyingShares.Count == 0)
+                            {
+                                throw new Exception("L'option n'a aucun sous-jacent associé");
+                            }
+                            double sum = 0;
+                            foreach(ShareAndWeight shw in OptionData.UnderlyingShares)
+                            {
+                                sum += shw.Weight;
+                            }
+                            if(sum != 1)
+                            {
+                                throw new Exception("La somme des poids des options n'est pas 1");
+                            }
+                            OptionData.copy(TempOptionData);
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show(e.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     });
                 }
                 return saveChanges;

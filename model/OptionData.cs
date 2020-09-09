@@ -168,8 +168,7 @@ namespace PricingApp.model
             int i = 0;
             while (!found && i < AviableShares.Count)
             {
-                System.Diagnostics.Debug.WriteLine(AviableShares[i].Id + "h");
-                if ((Id + "     ").Equals(AviableShares[i].Id))
+                if ((Id + "    ").Equals(AviableShares[i].Id))
                 {
                     UnderlyingShares.Add(new ShareAndWeight(AviableShares[i], weight));
                     AviableShares.Remove(AviableShares[i]);

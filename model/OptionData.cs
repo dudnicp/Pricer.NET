@@ -22,6 +22,12 @@ namespace PricingApp.model
                 Share = share;
                 Weight = weight;
             }
+
+            public ShareAndWeight(ShareAndWeight other)
+            {
+                Share = other.Share;
+                Weight = other.Weight;
+            }
         }
 
         private string name;
@@ -137,7 +143,11 @@ namespace PricingApp.model
             Strike = other.Strike;
             Maturity = new DateTime(other.Maturity.Ticks);
             AviableShares = new ObservableCollection<Share>(other.AviableShares);
-            UnderlyingShares = new ObservableCollection<ShareAndWeight>(other.UnderlyingShares);
+            UnderlyingShares = new ObservableCollection<ShareAndWeight>();
+            foreach(ShareAndWeight saw in other.UnderlyingShares)
+            {
+                UnderlyingShares.Add(new ShareAndWeight(saw));
+            }
         }
 
         public void addUnderlyingShare(Share share, double weight = 1)

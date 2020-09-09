@@ -239,21 +239,21 @@ namespace PricingApp
             PortfolioManager manager = new PortfolioManager(pricer, new SimulatedDataFeedProvider());
 
             // portfolio value 
-            ChartValues <DataChartViewModel> chartValues = new ChartValues<DataChartViewModel>();
+            ChartValues <DateTimePoint> chartValues = new ChartValues<DateTimePoint>();
             List<TrackedResults> trackedList = manager.computePortfolioEvolution(new DateTime(2020, 1, 1), new DateTime(2025, 12, 1), 100, 20);
             // option value
-            ChartValues<DataChartViewModel> chartValues2 = new ChartValues<DataChartViewModel>();
+            ChartValues<DateTimePoint> chartValues2 = new ChartValues<DateTimePoint>();
             // tracking error
-            ChartValues<DataChartViewModel> chartValues3 = new ChartValues<DataChartViewModel>();
-            ChartValues<DataChartViewModel> chartValues4 = new ChartValues<DataChartViewModel>();
+            ChartValues<DateTimePoint> chartValues3 = new ChartValues<DateTimePoint>();
+            ChartValues<DateTimePoint> chartValues4 = new ChartValues<DateTimePoint>();
 
 
             foreach(TrackedResults res in trackedList)
             {
-                chartValues.Add(new DataChartViewModel(res.Date, res.PortfolioValue));
-                chartValues2.Add(new DataChartViewModel(res.Date, res.Payoff));
-                chartValues3.Add(new DataChartViewModel(res.Date, res.TrackingError));
-                chartValues4.Add(new DataChartViewModel(res.Date, (res.PortfolioValue - res.Payoff) / res.TrackingError));
+                chartValues.Add(new DateTimePoint(res.Date, res.PortfolioValue));
+                chartValues2.Add(new DateTimePoint(res.Date, res.Payoff));
+                chartValues3.Add(new DateTimePoint(res.Date, res.TrackingError));
+                chartValues4.Add(new DateTimePoint(res.Date, (res.PortfolioValue - res.Payoff) / res.TrackingError));
             }
 
             
@@ -287,7 +287,7 @@ namespace PricingApp
                 },
             };
 
-            Formatter = value => new System.DateTime((long)(value * TimeSpan.FromDays(1).Ticks)).ToString("t");
+            Formatter = value => new DateTime((long)value).ToString("D");
         }
         public Func<double, string> Formatter { get; set; }
 

@@ -37,7 +37,7 @@
         <TextBox x:Name="estimationPeriodTextBox" Text="{Binding TestData.EstimationPeriod}" Grid.Row="4" Grid.Column="1"/>
 
         <Label Content="Nature du data-feed" Grid.Row="5"/>
-        <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding TestData.AviableDataFeedProviders}" SelectedItem="{Binding TestData.SelectedDataFeedProvider, Mode=TwoWay}">
+        <ComboBox x:Name="aviableDataFeedProviderComboBox" Grid.Row="5" Grid.Column="1" ItemsSource="{Binding TestData.AviableDataFeedProviders}" SelectedItem="{Binding TestData.SelectedDataFeedProvider, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <Label Content="{Binding Name}"/>
@@ -45,6 +45,6 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <Button x:Name="launchTestButton" Content="Lancer le test" Grid.Row="6" Grid.ColumnSpan="2" Command="{Binding LaunchTest}"/>
+        <Button x:Name="launchTestButton" Content="Lancer le test" Grid.Row="6" Grid.ColumnSpan="2" Command="{Binding LaunchTest}" CommandParameter="{Binding ElementName=aviableDataFeedProviderComboBox, Path=SelectedItem}"/>
     </Grid>
 </UserControl>

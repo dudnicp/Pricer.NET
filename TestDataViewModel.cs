@@ -22,7 +22,7 @@ using PricingApp.services.optionPricers;
 
 namespace PricingApp
 {
-    public class GraphViewModel : INotifyPropertyChanged
+    public class TestDataViewModel : INotifyPropertyChanged
     {
         private SeriesCollection seriesCollection;
         private SeriesCollection seriesCollection2;
@@ -31,13 +31,13 @@ namespace PricingApp
 
         public SeriesCollection SeriesCollection { get { return seriesCollection; } }
         public SeriesCollection SeriesCollection2 { get { return seriesCollection2; } }
-        public GraphViewModel(List<TrackedResults> resultsEvolution)
+        public TestDataViewModel()
         {
             var dayConfig = Mappers.Xy<DataChartViewModel>()
                 .X(dayModel => (double)dayModel.Date.Ticks / TimeSpan.FromDays(1).Ticks)
                 .Y(dayModel => dayModel.Value);
 
-            /*Share share1 = new Share("ACCOR SA", "AC FP");
+            Share share1 = new Share("ACCOR SA", "AC FP");
             Share share2 = new Share("ALSTOM", "ALO FP");
             Share[] underlyingAsset = new Share[]{share1, share2 };
             VanillaCall opt0 = new VanillaCall("option", share1, new DateTime(2180, 2, 2), 5);
@@ -48,7 +48,7 @@ namespace PricingApp
 
             PortfolioManager manager = new PortfolioManager(pricer, new SimulatedDataFeedProvider());
 
-            List<TrackedResults> trackedList = manager.computePortfolioEvolution(new DateTime(2020, 1, 1), new DateTime(2025, 12, 1), 100, 20);*/
+            List<TrackedResults> trackedList = manager.computePortfolioEvolution(new DateTime(2020, 1, 1), new DateTime(2025, 12, 1), 100, 20);
 
 
 
@@ -59,7 +59,7 @@ namespace PricingApp
             ChartValues<DateTimePoint> trackingErrorValues = new ChartValues<DateTimePoint>();
             ChartValues<DateTimePoint> optionPriceValues = new ChartValues<DateTimePoint>();
 
-            foreach(TrackedResults res in resultsEvolution)
+            foreach(TrackedResults res in trackedList)
             {
                 portfolioValues.Add(new DateTimePoint(res.Date, res.PortfolioValue));
                 payoffValues.Add(new DateTimePoint(res.Date, res.Payoff));

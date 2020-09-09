@@ -261,16 +261,19 @@ namespace PricingApp
             {
                 new LineSeries // portfolio value
                 {
+                    Title = "Portfolio",
                     Values = chartValues,
                     PointGeometrySize = 5
                 },
                 new LineSeries // payoff value
                 {
+                    Title = "Payoff",
                     Values = chartValues2,
                     PointGeometrySize = 5
                 },
                 new LineSeries // optionPrice
                 {
+                    Title = "Option",
                     Values = chartValues4,
                     PointGeometrySize = 5
                 },
@@ -282,12 +285,13 @@ namespace PricingApp
 
                 new LineSeries // tracking error value
                 {
+                    Title = "Tracking Error",
                     Values = chartValues3,
                     PointGeometrySize = 5
                 },
             };
 
-            Formatter = value => new DateTime((long)value).ToString("D");
+            Formatter = value => new DateTime((long)value).ToString("d");
         }
         public Func<double, string> Formatter { get; set; }
 

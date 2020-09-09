@@ -13,22 +13,27 @@
     <StackPanel>
         
         <lvc:CartesianChart Height="200" Series="{Binding SeriesCollection}">
+ 
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis Foreground="DodgerBlue" Title="Value"/>
+                <lvc:Axis Foreground="RosyBrown" Title="Valeur en €"/>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Foreground="DodgerBlue" Title="Année" LabelFormatter="{Binding Formatter}"/>
+                <lvc:Axis Foreground="RosyBrown" Title="Date" LabelFormatter="{Binding Formatter}"/>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
 
+        <TextBlock Name="Graph1" TextWrapping="Wrap" TextAlignment="Center" FontWeight="UltraBold">Valeurs du Payoff, de l'option et du Portefeuille de couverture en fonction du temps</TextBlock>
+
         <lvc:CartesianChart Height="200" Series="{Binding SeriesCollection2}">
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis Foreground="DodgerBlue" Title="Value"/>
+                <lvc:Axis Foreground="RosyBrown" Title="Valeur en €"/>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Foreground="DodgerBlue" Title="Année" LabelFormatter="{Binding Formatter}"/>
+                <lvc:Axis Foreground="RosyBrown" Title="Date" LabelFormatter="{Binding Formatter}"/>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
+
+        <TextBlock Name="Graph2" TextWrapping="Wrap" TextAlignment="Center" FontWeight="UltraBold">Valeurs de la Tracking Error en fonction du temps</TextBlock>
 
     </StackPanel> 
 

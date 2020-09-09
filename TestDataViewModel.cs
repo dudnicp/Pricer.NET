@@ -34,6 +34,7 @@ namespace PricingApp
         private int estimationPeriod;
         private ObservableCollection<Share> optionUnderlyingShares;
         private SeriesCollection seriesCollection;
+        private SeriesCollection seriesCollection2;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -43,6 +44,9 @@ namespace PricingApp
         }
 
         public SeriesCollection SeriesCollection { get { return seriesCollection; } }
+        public SeriesCollection SeriesCollection2 { get { return seriesCollection2; } }
+
+
 
         public string OptionName
         {
@@ -227,16 +231,16 @@ namespace PricingApp
             Share share2 = new Share("ALSTOM", "ALO FP");
             Share[] underlyingAsset = new Share[]{share1, share2 };
             VanillaCall opt0 = new VanillaCall("option", share1, new DateTime(2180, 2, 2), 5);
-            BasketOption opt = new BasketOption("option", underlyingAsset, new double []{ 0.7, 0.3 }, new DateTime(2020, 12, 31), 0.1);
+            BasketOption opt = new BasketOption("option", underlyingAsset, new double []{ 0.7, 0.3 }, new DateTime(2030, 12, 31), 10);
 
             //BasketOptionPricer pricer = new BasketOptionPricer(opt);
-            VanillaCallPricer pricer = new VanillaCallPricer(opt0);
+            var pricer = new VanillaCallPricer(opt0);
 
             PortfolioManager manager = new PortfolioManager(pricer, new SimulatedDataFeedProvider());
 
             // portfolio value 
             ChartValues <DataChartViewModel> chartValues = new ChartValues<DataChartViewModel>();
-            List<TrackedResults> trackedList = manager.computePortfolioEvolution(new DateTime(2020, 1, 1), new DateTime(2025, 12, 1), 100, 10);
+            List<TrackedResults> trackedList = manager.computePortfolioEvolution(new DateTime(2020, 1, 1), new DateTime(2025, 12, 1), 100, 20);
             // option value
             ChartValues<DataChartViewModel> chartValues2 = new ChartValues<DataChartViewModel>();
             // tracking error
@@ -265,11 +269,6 @@ namespace PricingApp
                     Values = chartValues2,
                     PointGeometrySize = 5
                 },
-                new LineSeries // tracking error value
-                {
-                    Values = chartValues3,
-                    PointGeometrySize = 5
-                },
                 new LineSeries // optionPrice
                 {
                     Values = chartValues4,
@@ -277,6 +276,17 @@ namespace PricingApp
                 },
 
             };
+
+            seriesCollection2 = new SeriesCollection(dayConfig)
+            {
+
+                new LineSeries // tracking error value
+                {
+                    Values = chartValues3,
+                    PointGeometrySize = 5
+                },
+            };
+
             Formatter = value => new System.DateTime((long)(value * TimeSpan.FromDays(1).Ticks)).ToString("t");
         }
         public Func<double, string> Formatter { get; set; }

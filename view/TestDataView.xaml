@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="PricingApp.view.TestDataView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PricingApp.viewModel"
+             mc:Ignorable="d">
+    <UserControl.DataContext>
+        <local:TestDataViewModel></local:TestDataViewModel>
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Caractéristiques du test" FontWeight="Bold" FontSize="15" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+
+        <Label Content="Date de début du test" Grid.Row="1" />
+        <DatePicker x:Name="testStartDatePicler" SelectedDate="{Binding TestData.TestStart}" Grid.Row="1" Grid.Column="1" />
+
+        <Label Content="Date de fin du test" Grid.Row="2" />
+        <DatePicker x:Name="testEndDatePicler" SelectedDate="{Binding TestData.TestEnd}" Grid.Row="2" Grid.Column="1" />
+
+        <Label Content="Durée de la période de rebalancement" Grid.Row="3" />
+        <TextBox x:Name="rebalancingPeriodTextBox" Text="{Binding TestData.RebalancingPeriod}" Grid.Row="3" Grid.Column="1"/>
+
+        <Label Content="Durée de la période d'estimation" Grid.Row="4" />
+        <TextBox x:Name="estimationPeriodTextBox" Text="{Binding TestData.EstimationPeriod}" Grid.Row="4" Grid.Column="1"/>
+
+        <Label Content="Nature du data-feed" Grid.Row="5"/>
+        <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding TestData.AviableDataFeedProviders}" SelectedItem="{Binding TestData.SelectedDataFeedProvider, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <Button x:Name="launchTestButton" Content="Lancer le test" Grid.Row="6" Grid.ColumnSpan="2" Command="{Binding LaunchTest}"/>
+    </Grid>
+</UserControl>

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PricingApp.model;
+using PricingApp.view;
 
 namespace PricingApp
 {
@@ -24,7 +25,12 @@ namespace PricingApp
         public MainWindow()
         {
             InitializeComponent();
-            //this.DataContext = 
+            MainWindowViewModel vm = new MainWindowViewModel();
+            DataContext = vm;
+
+            optionListUC.DataContext = vm.OptionListViewModel;
+            optionDataUC.DataContext = vm.OptionListViewModel.SelectedOptionViewModel;
+            testDataUC.DataContext = vm.OptionListViewModel.TestDataViewModel;
         }
     }
 }

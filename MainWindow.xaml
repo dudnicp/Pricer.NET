@@ -1,40 +1,28 @@
 ﻿<Window x:Class="PricingApp.MainWindow"
+        ResizeMode="NoResize"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-    xmlns:local="clr-namespace:PricingApp"
-    mc:Ignorable="d"
-    Title="MainWindow" Height="630" Width="930">
-    <Window.DataContext>
-        <local:TestDataViewModel></local:TestDataViewModel>
-    </Window.DataContext>
-    <StackPanel>
-        
-        <lvc:CartesianChart Height="200" Series="{Binding SeriesCollection}">
- 
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Foreground="RosyBrown" Title="Valeur en €"/>
-            </lvc:CartesianChart.AxisY>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Foreground="RosyBrown" Title="Date" LabelFormatter="{Binding Formatter}"/>
-            </lvc:CartesianChart.AxisX>
-        </lvc:CartesianChart>
-
-        <TextBlock Name="Graph1" TextWrapping="Wrap" TextAlignment="Center" FontWeight="UltraBold">Valeurs du Payoff, de l'option et du Portefeuille de couverture en fonction du temps</TextBlock>
-
-        <lvc:CartesianChart Height="200" Series="{Binding SeriesCollection2}">
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Foreground="RosyBrown" Title="Valeur en €"/>
-            </lvc:CartesianChart.AxisY>
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Foreground="RosyBrown" Title="Date" LabelFormatter="{Binding Formatter}"/>
-            </lvc:CartesianChart.AxisX>
-        </lvc:CartesianChart>
-
-        <TextBlock Name="Graph2" TextWrapping="Wrap" TextAlignment="Center" FontWeight="UltraBold">Valeurs de la Tracking Error en fonction du temps</TextBlock>
-
-    </StackPanel> 
-
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PricingApp"
+        xmlns:uc="clr-namespace:PricingApp.view"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="420" Width="800">
+    <Grid Background="AliceBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="220"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3"/>
+            <ColumnDefinition Width="450"/>
+        </Grid.ColumnDefinitions>
+        <uc:OptionDataView x:Name="optionDataUC" Grid.RowSpan="3"/>
+        <Rectangle Width="3" Grid.Column="1" Grid.RowSpan="3" Fill="Black"/>
+        <Rectangle Height="3" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Fill="Black"/>
+        <uc:OptionListView x:Name="optionListUC" Grid.Column="2"/>
+        <uc:TestDataView x:Name="testDataUC" Grid.Row="2" Grid.Column="2" />
+    </Grid>
 </Window>

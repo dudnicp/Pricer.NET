@@ -17,7 +17,6 @@ namespace PricingApp.services
         IDataFeedProvider dataFeedProvider;
         private OptionPricer optionPricer;
         private TrackedResults results;
-        private const double r = 0.01;
         private double[] deltas;
 
         public HedgingPortfolio Portfolio { get; }
@@ -32,9 +31,10 @@ namespace PricingApp.services
         }
 
         // Crée une liste de resultats (l'évolution du portefeuille de l'option sur la durée demandée)
-        public void computePortfolioEvolution(DateTime testStart, DateTime testEnd,
+        public List<TrackedResults> computePortfolioEvolution(DateTime testStart, DateTime testEnd,
                             int rebalancingPeriod, int estimationPeriod)
         {
+            List<TrackedResults> res = new List<TrackedResults>();
             List<DataFeed> data = dataFeedProvider.GetDataFeed(optionPricer.Opt.UnderlyingShareIds, testStart,
                 optionPricer.Opt.Maturity); // Données totales
 
@@ -42,15 +42,22 @@ namespace PricingApp.services
             int i = 0;
             List<DataFeed> pricingData = data.GetRange(i * rebalancingPeriod, estimationPeriod);
 
-            while (DateTime.Compare(pricingData.Last().Date, testEnd) < 0)
+            while (DateTime.Compare(pricingData.Last().Date, testEnd) < 0 && ((i+1) * rebalancingPeriod + estimationPeriod) < data.Count)
             {
-                updateResults(pricingData, i);
-                i += 1;
+                int nRebalacingDays = 0;
+                if(i != 0)
+                {
+                    nRebalacingDays = (pricingData.Last().Date - data[(i - 1) * rebalancingPeriod + estimationPeriod].Date).Days;
+                }
+                updateResults(pricingData, i, nRebalacingDays);
+                res.Add(new TrackedResults(results));
+                i ++;
                 pricingData = data.GetRange(i * rebalancingPeriod, estimationPeriod);
             }
+            return res;
         }
 
-        private void updateResults(List<DataFeed> pricingData, int periodIndex)
+        private void updateResults(List<DataFeed> pricingData, int periodIndex, int nRebalancingDays)
         {
 
             CompletePricingResults pricingResult = optionPricer.getPricingResults(pricingData);
@@ -60,7 +67,7 @@ namespace PricingApp.services
 
             if(periodIndex == 0)
             {
-                deltas = newDeltas;
+                Array.Copy(newDeltas, deltas, newDeltas.Length);
             }
 
             double riskyAsset = 0;
@@ -75,54 +82,16 @@ namespace PricingApp.services
             }
             else
             {
-                results.PortfolioValue = results.Portfolio.RiskyAsset + results.Portfolio.NonRiskyAsset * Math.Exp(
-                    r * (pricingData.Last().Date - pricingData.First().Date).Days / 365);
+                results.PortfolioValue = riskyAsset + results.Portfolio.NonRiskyAsset * RiskFreeRateProvider.GetRiskFreeRateAccruedValue(nRebalancingDays / 365.0);
             }
 
             double nonRiskyAsset = results.PortfolioValue - riskyAsset;
             results.Portfolio = new HedgingPortfolio(riskyAsset, nonRiskyAsset);
-            results.Payoff = ((optPrice - optionPricer.Opt.Strike) > 0) ? (optPrice - optionPricer.Opt.Strike) : 0;
+            results.Payoff = optionPricer.Opt.GetPayoff(pricingData.Last().PriceList);
             results.TrackingError = (results.PortfolioValue - results.Payoff) / optPrice;
             results.Date = pricingData.Last().Date;
 
             deltas = newDeltas;
         }
-
-
-
-        /*protected Dictionary<string, (double, double)> getVolatilityAndSpot(List<DataFeed> data)
-        {
-            Dictionary<string, (double, double)> sharesData = new Dictionary<string, (double, double)>();
-            Dictionary<string, List<decimal>> shareSpots = new Dictionary<string, List<decimal>>();
-            double vol, spot;
-            foreach (DataFeed dataFeed in data)
-            {
-                foreach(KeyValuePair<string, decimal> kvp in dataFeed.PriceList)
-                {
-                    shareSpots[]
-                }
-            }
-            spot = Decimal.ToDouble(values.Last());
-            vol = ComputeSd(values);
-            return (vol, spot);
-        }
-
-        protected double ComputeSd(List<decimal> values)
-        {
-            decimal moyenne = 0;
-            double moy, var = 0;
-            foreach (decimal val in values)
-            {
-                moyenne += val;
-            }
-            moy = Decimal.ToDouble(moyenne / values.Count);
-
-            foreach(decimal val in values)
-            {
-                var += Math.Pow(moy - Decimal.ToDouble(val), 2);
-            }
-            var = Math.Sqrt(var);
-            return var;
-        }*/
     }
 }

@@ -14,6 +14,7 @@ namespace PricingApp.services.optionPricers
 {
     public class BasketOptionPricer : OptionPricer
     {
+
         public BasketOptionPricer(BasketOption opt) : base(opt)
         {
         }
@@ -25,7 +26,7 @@ namespace PricingApp.services.optionPricers
             double[] volatility = StatComputing.volatilitiesComputing(underlyingSpots);
             Pricer pricer = new Pricer();
             int nShares = underlyingSpots.GetLength(1);
-            double[] spots = new double[nShares - 1];
+            double[] spots = new double[nShares];
             for(int i = 0; i < nShares; i++)
             {
                 spots[i] = underlyingSpots[nShares - 1, i];

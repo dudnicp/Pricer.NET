@@ -39,6 +39,7 @@ namespace PricingApp.model
                 }
             }
         }
+
         public double PortfolioValue
         {
             get
@@ -55,6 +56,7 @@ namespace PricingApp.model
                 }
             }
         }
+
         public double Payoff
         {
             get
@@ -112,6 +114,15 @@ namespace PricingApp.model
             this.payoff = optionPayOff;
             this.date = date;
             this.trackingError = trackingError;
+        }
+
+        public TrackedResults(TrackedResults other)
+        {
+            this.portfolio = other.portfolio;
+            this.portfolioValue = other.portfolioValue;
+            this.payoff = other.payoff;
+            this.date = other.date;
+            this.trackingError = other.trackingError;
         }
 
         public TrackedResults()

@@ -21,5 +21,6 @@ namespace PricingApp.services.optionPricers
             this.opt = opt;
         }
         public abstract CompletePricingResults getPricingResults(List<DataFeed> pricingData);
+
     }
 }

@@ -22,15 +22,11 @@ namespace PricingApp.services.optionPricers
             double[,] underlyingSpots = ConvertDecimalArray.listDataFeedToDoubleArray(pricingData);
             double[] volatility = StatComputing.volatilitiesComputing(underlyingSpots);
             Pricer pricer = new Pricer();
-            int nShares = underlyingSpots.GetLength(1);
-            double[] spots = new double[nShares - 1];
-            for (int i = 0; i < nShares; i++)
-            {
-                spots[i] = underlyingSpots[nShares - 1, i];
-            }
-            PricingResults pricingResults = pricer.Price((VanillaCall)opt, pricingData.Last().Date, 365, spots.First(), volatility.First()); ;
-            CompletePricingResults completePricingResults = new CompletePricingResults(pricingResults, spots);
+            double spot = underlyingSpots[underlyingSpots.GetLength(0) - 1, 0];
+            PricingResults pricingResults = pricer.Price((VanillaCall)opt, pricingData.Last().Date, 365, spot, volatility.First()); 
+            CompletePricingResults completePricingResults = new CompletePricingResults(pricingResults, new double[] { spot });
             return completePricingResults;
         }
+
     }
 }
